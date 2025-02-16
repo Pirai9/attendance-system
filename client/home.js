@@ -1,3 +1,5 @@
+const API_BASE_URL = 'http://localhost:8080/api';
+
 document.addEventListener('DOMContentLoaded', function() {
     // Check authentication state
     checkAuth();
@@ -108,4 +110,37 @@ function showToast(message, isSuccess = true) {
             background: isSuccess ? "#4CAF50" : "#f44336",
         }
     }).showToast();
+}
+
+// Function to get auth header
+function getAuthHeader() {
+    const token = localStorage.getItem('token');
+    return token ? { 'Authorization': `Bearer ${token}` } : {};
+}
+
+// Example of how to use it in API calls
+async function fetchProtectedData() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/some-protected-endpoint`, {
+            headers: {
+                ...getAuthHeader(),
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error('Unauthorized');
+        }
+        
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        if (error.message === 'Unauthorized') {
+            // Token might be expired
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+        throw error;
+    }
 } 

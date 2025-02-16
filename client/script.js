@@ -29,17 +29,10 @@ async function handleLogin(event) {
 
         const data = await response.json();
         
-        if (response.ok && data.user) {
-            // Ensure we have user data before storing
-            const userData = {
-                id: data.user.id,
-                name: data.user.name,
-                email: data.user.email,
-                role: data.user.role
-            };
-            
-            // Store user data in localStorage
-            localStorage.setItem('user', JSON.stringify(userData));
+        if (response.ok && data.token) {
+            // Store token and user data
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
             
             // Show success message
             showToast('Login successful!', true);

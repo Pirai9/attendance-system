@@ -1,6 +1,7 @@
 package com.attendance.controller;
 
 import com.attendance.model.User;
+import com.attendance.security.JwtUtil;
 import com.attendance.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody Map<String, String> userData) {
@@ -76,8 +78,12 @@ public class AuthController {
             // Authenticate user
             User user = userService.authenticateUser(email, password);
             
+            // Generate JWT token
+            String token = jwtUtil.generateToken(user.getEmail(), user.getRole().toString());
+            
             return ResponseEntity.ok(Map.of(
                 "message", "Login successful",
+                "token", token,
                 "user", Map.of(
                     "id", user.getId(),
                     "name", user.getName(),
