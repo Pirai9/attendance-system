@@ -1,0 +1,11 @@
+com\attendance\controller\TestController.class
+com\attendance\service\UserService.class
+com\attendance\model\User$Role.class
+com\attendance\controller\AuthController.class
+com\attendance\model\User.class
+com\attendance\model\Attendance$Status.class
+com\attendance\AttendanceSystemApplication.class
+com\attendance\repository\UserRepository.class
+com\attendance\config\SecurityConfig.class
+com\attendance\config\WebConfig.class
+com\attendance\model\Attendance.class
